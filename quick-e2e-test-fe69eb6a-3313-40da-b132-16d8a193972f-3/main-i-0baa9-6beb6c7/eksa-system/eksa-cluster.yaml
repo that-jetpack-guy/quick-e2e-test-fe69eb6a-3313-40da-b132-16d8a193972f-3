@@ -1,0 +1,66 @@
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: Cluster
+metadata:
+  annotations:
+    anywhere.eks.amazonaws.com/managed-by-cli: "true"
+    anywhere.eks.amazonaws.com/management-components-version: v0.20.0-dev+build.335
+  name: main-i-0baa9-6beb6c7
+  namespace: default
+spec:
+  clusterNetwork:
+    cniConfig:
+      cilium: {}
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    services:
+      cidrBlocks:
+      - 10.96.0.0/12
+  controlPlaneConfiguration:
+    count: 1
+    machineHealthCheck:
+      maxUnhealthy: 100%
+  datacenterRef:
+    kind: DockerDatacenterConfig
+    name: main-i-0baa9-6beb6c7
+  eksaVersion: v0.20.0-dev+build.335
+  externalEtcdConfiguration:
+    count: 1
+  gitOpsRef:
+    kind: FluxConfig
+    name: eksa-test
+  kubernetesVersion: "1.28"
+  machineHealthCheck:
+    maxUnhealthy: 100%
+    nodeStartupTimeout: 10m0s
+    unhealthyMachineTimeout: 5m0s
+  managementCluster:
+    name: main-i-0baa9-6beb6c7
+  workerNodeGroupConfigurations:
+  - count: 1
+    machineHealthCheck:
+      maxUnhealthy: 40%
+    name: md-0
+
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: DockerDatacenterConfig
+metadata:
+  name: main-i-0baa9-6beb6c7
+  namespace: default
+spec: {}
+
+---
+apiVersion: anywhere.eks.amazonaws.com/v1alpha1
+kind: FluxConfig
+metadata:
+  name: eksa-test
+  namespace: default
+spec:
+  branch: quick-e2e-test-fe69eb6a-3313-40da-b132-16d8a193972f-3
+  clusterConfigPath: quick-e2e-test-fe69eb6a-3313-40da-b132-16d8a193972f-3
+  git:
+    repositoryUrl: ssh://git@github.com/that-jetpack-guy/quick-e2e-test-fe69eb6a-3313-40da-b132-16d8a193972f-3.git
+  systemNamespace: default
+
+---
